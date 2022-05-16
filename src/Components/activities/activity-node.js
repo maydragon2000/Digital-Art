@@ -3,7 +3,7 @@ import { formatNum } from "../../utils";
 import TokenIcon from '../../assets/images/token.png';
 // musicList images
 
-
+    
 
 function ActivityNode(props) { 
     const {event} = props;

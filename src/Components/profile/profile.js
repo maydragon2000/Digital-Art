@@ -1,7 +1,7 @@
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useWeb3React } from '@web3-react/core'
 import axios from 'axios'
-import {useParams} from "react-router-dom"
+import { useParams } from "react-router-dom"
 
 
 import Header from '../header/header';
@@ -140,91 +140,93 @@ const ProfileContent = styled.div`
         }
     }
 `
-function Profile(props) { 
+function Profile(props) {
 
-    const [items, setItems] = useState([])  
-    const { user, login } = props;     
-    let { address } = useParams();    
+    const [items, setItems] = useState([])
+    const { user, login } = props;
+    let { address } = useParams();
     const [curTab, setCurTab] = useState('sale')
-    const { account, active, chainId, library } = useWeb3React();
+    //backend
+    // const { account, active, chainId, library } = useWeb3React();
+    const { account, library } = useWeb3React();
 
     const [userProfile, setUserProfile] = useState(undefined)
 
-    useEffect(() => {        
-        if (!userProfile){
-          getUser()
-        }        
-    }, [address])
+    useEffect(() => {
+        if (!userProfile) {
+            getUser()
+        }
+    }, [address, getUser, userProfile])
 
     useEffect(() => {
-        if(!!user) {
-          login();
+        if (!!user) {
+            login();
         }
-    }, [user, account, library])
+    }, [user, account, library, login])
 
-    function getUser(){
+    function getUser() {
         axios.get(`/api/user/detail/${address ? address : ""}`)
-        .then(res => {
-          setUserProfile(res.data.user)                
-        })
+            .then(res => {
+                setUserProfile(res.data.user)
+            })
     }
 
     useEffect(() => {
         if (address) {
-            let query = `/api/item/?owner=${address}`;           
+            let query = `/api/item/?owner=${address}`;
             switch (curTab) {
                 case 'sale':
                     // On Sale
-                    query = `/api/item/?owner=${address}&sale=true`; 
+                    query = `/api/item/?owner=${address}&sale=true`;
                     break;
                 case 'owned':
                     // Owned
-                    query = `/api/item/?owner=${address}`; 
+                    query = `/api/item/?owner=${address}`;
                     break;
                 case 'created':
                     // Created
-                    query = `/api/item/?creator=${address}`; 
+                    query = `/api/item/?creator=${address}`;
                     break;
                 default:
                     break;
             }
             axios.get(query)
-            .then(res => {                
-                setItems(res.data.items)                
-            }).catch(err => {
-                setItems([])                
-                console.log(err)
-            })
-        }        
-    }, [curTab,address])
-                
+                .then(res => {
+                    setItems(res.data.items)
+                }).catch(err => {
+                    setItems([])
+                    console.log(err)
+                })
+        }
+    }, [curTab, address])
+
     return (
         <div className="pg-explore">
-            <Header {...props}/>                
+            <Header {...props} />
             <ProfileContent>
-                <div style={{textAlign:'right'}}>
+                <div style={{ textAlign: 'right' }}>
                     <div className="edit-button" onClick={() => props.history.push('/editprofile')}>Edit</div>
                 </div>
                 <div className="user-info">
                     <img src={userProfile && userProfile.profilePic ? userProfile.profilePic : "https://ipfs.io/ipfs/QmaxQGhY772ffG7dZpGsVoUWcdSpEV1APru95icXKmii67"} alt="ArtistImage" />
                     <span className="artistName">{userProfile && userProfile.name ? userProfile.name : "NoName"}</span>
-                </div> 
-                <div className="container">                                               
-                    <div className="filter-box">                                                        
+                </div>
+                <div className="container">
+                    <div className="filter-box">
                         <ul className="filterLinks">
-                            <li onClick={() => setCurTab('sale')}><div className={curTab==='sale' ? 'active' : ''}>On sale</div></li>
-                            <li onClick={() => setCurTab('owned')}><div className={curTab==='owned' ? 'active' : ''}>Owned</div></li>
-                            <li onClick={() => setCurTab('created')}><div className={curTab==='created' ? 'active' : ''}>Created</div></li>                                
+                            <li onClick={() => setCurTab('sale')}><div className={curTab === 'sale' ? 'active' : ''}>On sale</div></li>
+                            <li onClick={() => setCurTab('owned')}><div className={curTab === 'owned' ? 'active' : ''}>Owned</div></li>
+                            <li onClick={() => setCurTab('created')}><div className={curTab === 'created' ? 'active' : ''}>Created</div></li>
                         </ul>
                     </div>
                     <div className="exploreList">
                         <div className="row-wrap">
                             {
-                                items.map((item, index)=> <div className="box-12 box-md-6 box-lg-4 box-xl-3">
-                                    <Nft key={index} {...props} item={item}/>
-                                </div>)  
-                            }                                
-                        </div>                          
+                                items.map((item, index) => <div className="box-12 box-md-6 box-lg-4 box-xl-3">
+                                    <Nft key={index} {...props} item={item} />
+                                </div>)
+                            }
+                        </div>
                     </div>
                 </div>
             </ProfileContent>
@@ -232,7 +234,7 @@ function Profile(props) {
             <Footer />
         </div>
     );
-    
+
 }
 
 export default Profile;

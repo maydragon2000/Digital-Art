@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Switch, BrowserRouter as Router, Route } from "react-router-dom";
+import { Routes, BrowserRouter as Router, Route } from "react-router-dom";
 import { useWeb3React } from '@web3-react/core'
 import { Modal } from '@material-ui/core';
 import Button from '@material-ui/core/button';
@@ -23,7 +23,7 @@ import Profile from './Components/profile/profile';
 import ItemDetail from './Components/item-detail/item-detail';
 
 import './App.css';
-
+import './main.8a3744a4.chunk.css'
 function App() {
 
   const [connectModalOpen, setConnectModalOpen] = useState(null);
@@ -111,20 +111,17 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
-        <Switch>
-          <Route path="/" exact render={(props) => (<Home {...props} user={user} connectAccount={connectAccount} />)} />
-          <Route path="/home" exact render={(props) => (<Home {...props} user={user} connectAccount={connectAccount} />)} />
-          <Route path="/activity" exact render={(props) => (<Activity {...props} user={user} connectAccount={connectAccount} />)} />
-          <Route path="/createitem" exact render={(props) => (<CreateItem {...props} user={user} connectAccount={connectAccount} />)} />
-          <Route path="/explore" exact render={(props) => (<Explore {...props} user={user} connectAccount={connectAccount} />)} />
-          <Route path="/details/:tokenId" exact render={(props) => (<ItemDetail {...props} user={user} connectAccount={connectAccount} />)} />
-          <Route path="/profile/:address" exact render={(props) => (<Profile {...props} getUser={getUser} user={user} login={login} connectAccount={connectAccount} />)} />
-          <Route path="/editprofile" exact render={(props) => (<EditProfile {...props} getUser={getUser} user={user} login={login} connectAccount={connectAccount} />)} />
-        </Switch>
-      </Router>
+      <Routes>
+        <Route path="/" exact element={<Home user={user} connectAccount={connectAccount} />} />
+        <Route path="/home" exact element={<Home user={user} connectAccount={connectAccount} />} />
+        <Route path="/activity" exact element={<Activity user={user} connectAccount={connectAccount} />} />
+        <Route path="/createitem" exact element={<CreateItem user={user} connectAccount={connectAccount} />} />
+        <Route path="/explore" exact element={<Explore user={user} connectAccount={connectAccount} />} />
+        <Route path="/details/:tokenId" exact element={<ItemDetail user={user} connectAccount={connectAccount} />} />
+        <Route path="/profile/:address" exact element={<Profile getUser={getUser} user={user} login={login} connectAccount={connectAccount} />} />
+        <Route path="/editprofile" exact element={<EditProfile getUser={getUser} user={user} login={login} connectAccount={connectAccount} />} />
+      </Routes>
       <Modal
-        disableBackdropClick
         disableEscapeKeyDown
         open={!!errorModalOpen && !active}
         onClose={() => { setErrorModalOpen(false) }}
@@ -138,7 +135,6 @@ function App() {
 
       </Modal>
       <Modal
-        disableBackdropClick
         disableEscapeKeyDown
         open={!!connectModalOpen}
         onClose={() => { setConnectModalOpen(false) }}

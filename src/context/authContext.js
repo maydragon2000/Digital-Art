@@ -1,5 +1,5 @@
 import axios from 'axios';
-import React, { useState, useReducer } from 'react';
+import React, { useReducer } from 'react';
 import Querystring from "query-string"
 
 
@@ -7,9 +7,9 @@ import Querystring from "query-string"
  * Context
  */
 
- const AuthStateContext = React.createContext();
- const AuthDispatchContext = React.createContext();
- 
+const AuthStateContext = React.createContext();
+const AuthDispatchContext = React.createContext();
+
 export function useAuthState() {
     const context = React.useContext(AuthStateContext);
     if (context === undefined) {
@@ -18,7 +18,7 @@ export function useAuthState() {
 
     return context;
 }
- 
+
 export function useAuthDispatch() {
     const context = React.useContext(AuthDispatchContext);
     if (context === undefined) {
@@ -57,50 +57,50 @@ export async function getUser(dispatch, address) {
 }
 
 export async function loginUser(dispatch, account, nonce, signer) {
-	try {
-		dispatch({ type: 'REQUEST_LOGIN' });
+    try {
+        dispatch({ type: 'REQUEST_LOGIN' });
         try {
             const signature = await signer.signMessage(
-              `I am signing my one-time nonce: ${nonce}`
+                `I am signing my one-time nonce: ${nonce}`
             );
-            
-            if(signature) {
-                const { data } = await axios.post(`/api/login`, Querystring.stringify({address: account, signature: signature}))
+
+            if (signature) {
+                const { data } = await axios.post(`/api/login`, Querystring.stringify({ address: account, signature: signature }))
                 const token = data.token;
-                if(token) {
+                if (token) {
                     localStorage.setItem('Token', token);
                     dispatch({ type: 'LOGIN_SUCCESS', payload: token });
                     await getUser(dispatch, account);
                     return token;
                 }
             }
-          } catch (err) {
+        } catch (err) {
             dispatch({ type: 'LOGIN_ERROR', error: err });
             console.log(err);
-          }
+        }
 
-	} catch (error) {
-		dispatch({ type: 'LOGIN_ERROR', error: error });
-		console.log(error);
-	}
+    } catch (error) {
+        dispatch({ type: 'LOGIN_ERROR', error: error });
+        console.log(error);
+    }
 }
 
 export async function logout(dispatch) {
-	dispatch({ type: 'LOGOUT' });
-	localStorage.removeItem('token');
+    dispatch({ type: 'LOGOUT' });
+    localStorage.removeItem('token');
 }
- 
 
- /**
-  * Reducers
-  */
+
+/**
+ * Reducers
+ */
 
 let token = localStorage.getItem('Token')
     ? localStorage.getItem('Token')
     : '';
 
 export const initialState = {
-    user: '' ,
+    user: '',
     token: '' || token,
     loading: false,
     errorMessage: null,
@@ -108,12 +108,12 @@ export const initialState = {
 
 export const AuthReducer = (initialState, action) => {
     switch (action.type) {
-        case 'FETCH_USER_SUCCESS': 
-        return {
-            ...initialState,
-            user: action.payload,
-            loading: false,
-        };
+        case 'FETCH_USER_SUCCESS':
+            return {
+                ...initialState,
+                user: action.payload,
+                loading: false,
+            };
         case 'REQUEST_LOGIN':
             return {
                 ...initialState,
@@ -143,4 +143,3 @@ export const AuthReducer = (initialState, action) => {
             throw new Error(`Unhandled action type: ${action.type}`);
     }
 };
-  

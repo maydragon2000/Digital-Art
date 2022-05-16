@@ -8,15 +8,15 @@ export function useEagerConnect() {
 
   const [tried, setTried] = useState(false)
   const [error, setError] = useState()
-  const connector = window.localStorage.getItem(connectorLocalStorageKey);  
+  const connector = window.localStorage.getItem(connectorLocalStorageKey);
   useEffect(() => {
-    if (connector && connector != "") {
+    if (connector && connector !== "") {
       const currentConnector = getConnector(connector)
       if (connector === "injectedConnector") {
         currentConnector.isAuthorized().then((isAuthorized) => {
           console.log("useEagerConnect:", { active, isAuthorized })
-          if (isAuthorized) {            
-            activate(currentConnector, undefined, true).catch((error) => {              
+          if (isAuthorized) {
+            activate(currentConnector, undefined, true).catch((error) => {
               if (error instanceof UnsupportedChainIdError) {
                 setupNetwork().then((hasSetup) => {
                   console.log("hasSetup")
@@ -28,7 +28,7 @@ export function useEagerConnect() {
               setError(error)
               setTried(true)
             })
-          } else {          
+          } else {
             setTried(true)
           }
         })
@@ -36,8 +36,8 @@ export function useEagerConnect() {
         activate(currentConnector);
         setTried(true)
       }
-    }    
-  }, [activate, connector]) // intentionally only running on mount (make sure it's only mounted once :))
+    }
+  }, [activate, connector, active]) // intentionally only running on mount (make sure it's only mounted once :))
 
   // if the connection worked, wait until we get confirmation of that to flip the flag
   useEffect(() => {

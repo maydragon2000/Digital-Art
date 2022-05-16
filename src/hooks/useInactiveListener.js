@@ -15,7 +15,7 @@ export function useInactiveListener(suppress = false) {
     if (ethereum && ethereum.on && !active && !error) {
       const handleChainChanged = (chainId) => {
         console.log("chainChanged", chainId);
-        if (connector && connector != "") {
+        if (connector && connector !== "") {
           const currentConnector = getConnector(connector)
           activate(currentConnector);
         }
@@ -24,7 +24,7 @@ export function useInactiveListener(suppress = false) {
       const handleAccountsChanged = (accounts) => {
         console.log("accountsChanged", accounts);
         if (accounts.length > 0) {
-          if (connector && connector != "") {
+          if (connector && connector !== "") {
             const currentConnector = getConnector(connector)
             activate(currentConnector);
           }
@@ -33,7 +33,7 @@ export function useInactiveListener(suppress = false) {
 
       const handleNetworkChanged = (networkId) => {
         console.log("networkChanged", networkId);
-        if (connector && connector != "") {
+        if (connector && connector !== "") {
           const currentConnector = getConnector(connector)
           activate(currentConnector);
         }
@@ -57,7 +57,7 @@ export function useInactiveListener(suppress = false) {
     }
       
     return () => {};
-  }, [active, error, suppress, activate]);
+  }, [active, error, suppress, activate, connector]);
 
   return {activateError};
 }
