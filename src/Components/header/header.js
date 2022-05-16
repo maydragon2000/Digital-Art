@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import { useWeb3React } from '@web3-react/core'
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
@@ -17,29 +17,29 @@ const SiteHeader = styled.div`
 
 function Header(props) {
     const { connectAccount } = props;
-    const {account, active, chainId, deactivate} = useWeb3React();
+    const { account, active, chainId, deactivate } = useWeb3React();
 
     const [showDropDown, setShowDropDown] = useState(false)
     const [openDrop, setOpenDrop] = useState(false)
 
     function signOut() {
-        setShowDropDown(false); 
-        deactivate(injectedConnector)     
+        setShowDropDown(false);
+        deactivate(injectedConnector)
         window.localStorage.setItem(connectorLocalStorageKey, "");
     }
 
-    function connectWallet(){
+    function connectWallet() {
         if (!account) {
             // connect account
-            closeMenu(); 
+            closeMenu();
             connectAccount();
         } else {
             // disconnect account
-            closeMenu(); 
+            closeMenu();
             signOut();
         }
     }
-  
+
 
     function openMenu() {
         document.body.classList.add('menuOpen');
@@ -48,7 +48,7 @@ function Header(props) {
         document.body.classList.remove('menuOpen');
     };
 
-    
+
     return (
         <SiteHeader>
             <div className="container">
@@ -73,24 +73,24 @@ function Header(props) {
                             <li onClick={(e) => closeMenu()}>
                                 <Link className="menuLink" to="/explore">Explore</Link>
                             </li>
-                            <li style={{display: account? '':'none'}} onClick={(e) => closeMenu()}>
+                            <li style={{ display: account ? '' : 'none' }} onClick={(e) => closeMenu()}>
                                 <Link className="menuLink" to="/activity">Activities</Link>
                             </li>
-                            <li style={{display: account? '':'none'}} onClick={(e) => closeMenu()}>
+                            <li style={{ display: account ? '' : 'none' }} onClick={(e) => closeMenu()}>
                                 <Link className="menuLink" to="/createitem">Create</Link>
                             </li>
-                            <li style={{display: account? '':'none'}} onClick={(e) => closeMenu()}>
+                            <li style={{ display: account ? '' : 'none' }} onClick={(e) => closeMenu()}>
                                 <Link to={`/profile/${account}`}><img src={headerUserIcon} alt="usericon" /></Link>
-                            </li>  
-                            <li onClick={() => { connectWallet()}}>
-                                <div className={`cta-button ${account ? 'disconnect' : ''}`}> <img src={walletIcon} alt="Wallet" /> {account? 'Disconnect' : 'Connect Wallet'}</div>
-                            </li>                              
+                            </li>
+                            <li onClick={() => { connectWallet() }}>
+                                <div className={`cta-button ${account ? 'disconnect' : ''}`}> <img src={walletIcon} alt="Wallet" /> {account ? 'Disconnect' : 'Connect Wallet'}</div>
+                            </li>
                         </ul>
                     </div>
                 </div>
             </div>
         </SiteHeader>
-    );    
+    );
 }
 
 export default Header;

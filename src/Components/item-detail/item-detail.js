@@ -1,10 +1,8 @@
-import React, {useState,useEffect} from "react";
-import {useParams} from "react-router-dom"
-import Slider from "react-slick";
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom"
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core'
 import axios from 'axios'
-import Querystring from 'query-string'
 import Snackbar from '@material-ui/core/Snackbar';
 import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
@@ -465,25 +463,25 @@ const ModalBody = styled.div`
 
 
 function ItemDetail(props) {
-    const {tokenId} = useParams();   
+    const { tokenId } = useParams();
     const [item, setItem] = useState(null)
-    const { account, active, chainId, library } = useWeb3React();
+    const { account, chainId, library } = useWeb3React();
     const [balance, setBalance] = useState(0)
     const [snackBarMessage, setSnackBarMessage] = useState("")
     const [openSnackbar, setOpenSnackbar] = useState(false)
 
     useEffect(() => {
-        if(!!account && !!library) {
+        if (!!account && !!library) {
             getTokenBalance(account, chainId, library.getSigner())
-            .then((balance) => {
-              setBalance(balance)
-            })
-            .catch(() => {
-              setBalance(0)
-            })          
+                .then((balance) => {
+                    setBalance(balance)
+                })
+                .catch(() => {
+                    setBalance(0)
+                })
         }
         return () => {
-          setBalance(0)          
+            setBalance(0)
         }
     }, [account, chainId, library])
 
@@ -495,18 +493,18 @@ function ItemDetail(props) {
     const [buyingStatus, setBuyingStatus] = useState(false);
     const [putPrice, setPutPrice] = useState(0)
 
-    function fetchItem(){
+    function fetchItem() {
         axios.get(`/api/item/detail/${tokenId}`)
-        .then(res => {
-          setItem(res.data.item)             
-        })
-        .catch(err => {
-          //show an error page that the item doesnt exist
-          setItem(undefined)          
-        })
+            .then(res => {
+                setItem(res.data.item)
+            })
+            .catch(err => {
+                //show an error page that the item doesnt exist
+                setItem(undefined)
+            })
     }
     useEffect(() => {
-        if(!item) {
+        if (!item) {
             fetchItem();
         }
     }, [item])
@@ -516,12 +514,12 @@ function ItemDetail(props) {
         setOpenSnackbar(false);
     };
 
-    function putFixed(){
-        if (putPrice <= 0){
+    function putFixed() {
+        if (putPrice <= 0) {
             setSnackBarMessage("Please input price correctly!")
             setOpenSnackbar(true)
             return
-        } 
+        }
         setListingStatus(true)
 
         listItem(
@@ -533,30 +531,30 @@ function ItemDetail(props) {
         ).then((tokenId) => {
             if (tokenId) {
                 axios.get(`/api/sync_block`)
-                .then((res) => {
-                    setListingStatus(false);
-                    setShowPutMarketPlace(false)
-                    setSnackBarMessage("Listed Success! Data will be updated after some block confirmation!");
-                    setOpenSnackbar(true);                    
-                    props.history.push(`/profile/${account}`)                    
-                    return true;
-                })
-                .catch((error) => {
-                    if (error.response) {
+                    .then((res) => {
                         setListingStatus(false);
-                        setSnackBarMessage(error.response.data.message);
-                        setOpenSnackbar(true);                        
-                    }
-                });
+                        setShowPutMarketPlace(false)
+                        setSnackBarMessage("Listed Success! Data will be updated after some block confirmation!");
+                        setOpenSnackbar(true);
+                        props.history.push(`/profile/${account}`)
+                        return true;
+                    })
+                    .catch((error) => {
+                        if (error.response) {
+                            setListingStatus(false);
+                            setSnackBarMessage(error.response.data.message);
+                            setOpenSnackbar(true);
+                        }
+                    });
             } else {
                 setListingStatus(false);
-                setSnackBarMessage("Failed Transaction");                
+                setSnackBarMessage("Failed Transaction");
                 setOpenSnackbar(true);
             }
         });
-        
-    }    
-    function unlistItem() {         
+
+    }
+    function unlistItem() {
         setDelistingStatus(true)
 
         delistItem(
@@ -566,37 +564,37 @@ function ItemDetail(props) {
         ).then((result) => {
             if (result) {
                 axios.get(`/api/sync_block`)
-                .then((res) => {
-                    setDelistingStatus(false);
-                    setShowUnlistMarketPlace(false)
-                    setSnackBarMessage("Unlisted Success! Data will be updated after some block confirmation!");
-                    setOpenSnackbar(true);                    
-                    props.history.push(`/profile/${account}`)                    
-                    return true;
-                })
-                .catch((error) => {
-                    if (error.response) {
+                    .then((res) => {
                         setDelistingStatus(false);
-                        setSnackBarMessage(error.response.data.message);
-                        setOpenSnackbar(true);                        
-                    }
-                });
+                        setShowUnlistMarketPlace(false)
+                        setSnackBarMessage("Unlisted Success! Data will be updated after some block confirmation!");
+                        setOpenSnackbar(true);
+                        props.history.push(`/profile/${account}`)
+                        return true;
+                    })
+                    .catch((error) => {
+                        if (error.response) {
+                            setDelistingStatus(false);
+                            setSnackBarMessage(error.response.data.message);
+                            setOpenSnackbar(true);
+                        }
+                    });
             } else {
                 setDelistingStatus(false);
-                setSnackBarMessage("Failed Transaction");                
+                setSnackBarMessage("Failed Transaction");
                 setOpenSnackbar(true);
             }
         });
 
-        
+
     }
     function buyItem() {
-        if (balance < item.price){
+        if (balance < item.price) {
             setShowBuyNowModal(false)
             setSnackBarMessage("Your available balance is less than the price!")
-            setOpenSnackbar(true)            
+            setOpenSnackbar(true)
             return
-        } 
+        }
         setBuyingStatus(true)
 
         buy(
@@ -608,57 +606,57 @@ function ItemDetail(props) {
         ).then((tokenId) => {
             if (tokenId) {
                 axios.get(`/api/sync_block`)
-                .then((res) => {
-                    setBuyingStatus(false);
-                    setShowBuyNowModal(false)
-                    setSnackBarMessage("Bought Success! Data will be updated after some block confirmation!");
-                    setOpenSnackbar(true);                    
-                    props.history.push(`/profile/${account}`)                    
-                    return true;
-                })
-                .catch((error) => {
-                    if (error.response) {
+                    .then((res) => {
                         setBuyingStatus(false);
-                        setSnackBarMessage(error.response.data.message);
-                        setOpenSnackbar(true);                        
-                    }
-                });
+                        setShowBuyNowModal(false)
+                        setSnackBarMessage("Bought Success! Data will be updated after some block confirmation!");
+                        setOpenSnackbar(true);
+                        props.history.push(`/profile/${account}`)
+                        return true;
+                    })
+                    .catch((error) => {
+                        if (error.response) {
+                            setBuyingStatus(false);
+                            setSnackBarMessage(error.response.data.message);
+                            setOpenSnackbar(true);
+                        }
+                    });
             } else {
                 setBuyingStatus(false);
-                setSnackBarMessage("Failed Transaction");                
+                setSnackBarMessage("Failed Transaction");
                 setOpenSnackbar(true);
             }
-        });        
+        });
     }
-    
-    
-    return (        
+
+
+    return (
         <div className="pg-inner">
-            <Header {...props}/>
+            <Header {...props} />
 
             <ProductDetaile>
                 <div className="container">
                     <div className="row-wrap">
-                        <div className="box-12 box-lg-6 box-xl-5 media-box"> 
+                        <div className="box-12 box-lg-6 box-xl-5 media-box">
                             <div className="inner-wrap">
                                 <div className="img-box">
-                                {
-                                    item?.assetType === 'video' ? <video src={item?.mainData} autoPlay loop controls/> 
-                                        : item?.assetType === 'image' ? <img src={item?.mainData} alt="IteeImage"/>
-                                            : <><img src={item?.coverImage} style={{width:'100%'}} alt="CoverImage"/><audio src={item?.mainData}  autoPlay loop controls/></>              
-                                }                                     
-                                </div>                                
+                                    {
+                                        item?.assetType === 'video' ? <video src={item?.mainData} autoPlay loop controls />
+                                            : item?.assetType === 'image' ? <img src={item?.mainData} alt="IteeImage" />
+                                                : <><img src={item?.coverImage} style={{ width: '100%' }} alt="CoverImage" /><audio src={item?.mainData} autoPlay loop controls /></>
+                                    }
+                                </div>
                             </div>
                         </div>
-                        <div className="box-12 box-lg-6 box-xl-7 content-box"> 
+                        <div className="box-12 box-lg-6 box-xl-7 content-box">
                             <div className="inner-wrap">
                                 <h1>{item?.name}</h1>
                                 <p>{item?.description}</p>
                                 <div className="createdBy">
                                     <span>Created by:</span>
                                     <div className="artist-box">
-                                        <img src={item?.creatorUser?.profilePic} alt="ArtistImage" 
-                                            onClick={() => props.history.push(`/profile/${item?.creatorUser?.address}`)}/>
+                                        <img src={item?.creatorUser?.profilePic} alt="ArtistImage"
+                                            onClick={() => props.history.push(`/profile/${item?.creatorUser?.address}`)} />
                                         <div className="details">
                                             <span className="artistName">{item?.creatorUser?.name}</span>
                                         </div>
@@ -667,35 +665,35 @@ function ItemDetail(props) {
                                 <div className="ownedBy">
                                     <span>Owned by:</span>
                                     <div className="artist-box">
-                                        <img src={item?.ownerUser?.profilePic} alt="ArtistImage" 
-                                            onClick={() => props.history.push(`/profile/${item?.ownerUser?.address}`)}/>
+                                        <img src={item?.ownerUser?.profilePic} alt="ArtistImage"
+                                            onClick={() => props.history.push(`/profile/${item?.ownerUser?.address}`)} />
                                         <div className="details">
                                             <span className="artistName">{item?.ownerUser?.name}</span>
                                         </div>
                                     </div>
                                 </div>
-                                <div className="priceBox"> 
-                                    <span className="currentPrice">{item?.price> 0 ? 'Current Price':'Not for sale'}</span>
-                                    <span className="price">{item?.price> 0 ? `${formatNum(item?.price)} ${process.env.REACT_APP_TOKEN}`:''}</span>                                    
+                                <div className="priceBox">
+                                    <span className="currentPrice">{item?.price > 0 ? 'Current Price' : 'Not for sale'}</span>
+                                    <span className="price">{item?.price > 0 ? `${formatNum(item?.price)} ${process.env.REACT_APP_TOKEN}` : ''}</span>
                                 </div>
-                                <div className="button-box"> 
-                                {
-                                    item && account &&                                        
-                                    (item.ownerUser.address.toLowerCase() === account.toLowerCase() ? 
-                                        item?.price === 0 ? 
-                                            <div className="cta-button cta-outline" 
-                                                onClick={() => setShowPutMarketPlace(true)}>
-                                                Put on the sale
-                                            </div>
+                                <div className="button-box">
+                                    {
+                                        item && account &&
+                                        (item.ownerUser.address.toLowerCase() === account.toLowerCase() ?
+                                            item?.price === 0 ?
+                                                <div className="cta-button cta-outline"
+                                                    onClick={() => setShowPutMarketPlace(true)}>
+                                                    Put on the sale
+                                                </div>
+                                                :
+                                                <div className="cta-button cta-outline"
+                                                    onClick={() => setShowUnlistMarketPlace(true)}>
+                                                    Unlist from the sale
+                                                </div>
                                             :
-                                            <div className="cta-button cta-outline" 
-                                                onClick={() => setShowUnlistMarketPlace(true)}>
-                                                Unlist from the sale
-                                            </div>       
-                                        :                                                 
-                                        <div className="cta-button cta-outline"  style = {{display: item?.price > 0 ? "" : "none"}} onClick={() => setShowBuyNowModal(true)}>Buy Now</div>                                            
-                                    )
-                                }                                    
+                                            <div className="cta-button cta-outline" style={{ display: item?.price > 0 ? "" : "none" }} onClick={() => setShowBuyNowModal(true)}>Buy Now</div>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </div>
@@ -708,9 +706,9 @@ function ItemDetail(props) {
                     <div className="row-wrap">
                         <div className="box-12 tableMain">
                             <div className="headigBox is-open" id="activityOpen" >
-                                <span className="heading"><img src={ActivityIcon} alt="Activity" /> Item Activity</span>                                
+                                <span className="heading"><img src={ActivityIcon} alt="Activity" /> Item Activity</span>
                             </div>
-                            <div className="filterBox">                                    
+                            <div className="filterBox">
                             </div>
                             <div className="tableBox">
                                 <table class="table">
@@ -724,18 +722,18 @@ function ItemDetail(props) {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {
-                                        item?.events.map((event, index)=> 
-                                        <EventNode {...props} event={event}/>)  
-                                    }                                            
+                                        {
+                                            item?.events.map((event, index) =>
+                                                <EventNode {...props} event={event} />)
+                                        }
                                     </tbody>
                                 </table>
-                            </div>                            
-                            
+                            </div>
+
                         </div>
                     </div>
                 </div>
-            </ItemActivity>            
+            </ItemActivity>
             <Footer />
 
             <Modal
@@ -749,26 +747,26 @@ function ItemDetail(props) {
             >
                 <ModalBody>
                     <div className="modalHeader">
-                        <CloseIcon fontSize="small" onClick={() => setShowBuyNowModal(false)}/>                        
+                        <CloseIcon fontSize="small" onClick={() => setShowBuyNowModal(false)} />
                     </div>
                     <div className="modalTitle">
                         <div className="modalLable">You will pay</div>
                         <div className="payAmount">
-                            <img src={TokenIcon} alt="tokenIcon"/>
+                            <img src={TokenIcon} alt="tokenIcon" />
                             <div className="price">{formatNum(item?.price)}</div>
                             <div className="unit">{process.env.REACT_APP_TOKEN}</div>
-                        </div>                                         
-                    </div>           
-                    <div className="modalRow"> 
+                        </div>
+                    </div>
+                    <div className="modalRow">
                         <div className="modalLable">Available</div>
                         <div className="modalPrice">{formatNum(balance)} {process.env.REACT_APP_TOKEN}</div>
                     </div>
-                   <div className="modalAction">
+                    <div className="modalAction">
                         <div className="cancelButton" onClick={() => setShowBuyNowModal(false)}>Cancel</div>
                         <div className="submitButton" onClick={() => buyItem()}>
-                        {
-                            buyingStatus? <CircularProgress style={{width: "16px", height: "16px", color: "white",}}/> : "Confirm"
-                        }                            
+                            {
+                                buyingStatus ? <CircularProgress style={{ width: "16px", height: "16px", color: "white", }} /> : "Confirm"
+                            }
                         </div>
                     </div>
                 </ModalBody>
@@ -784,7 +782,7 @@ function ItemDetail(props) {
             >
                 <ModalBody>
                     <div className="modalHeader">
-                        <CloseIcon fontSize="small" onClick={() => setShowPutMarketPlace(false)}/>                        
+                        <CloseIcon fontSize="small" onClick={() => setShowPutMarketPlace(false)} />
                     </div>
                     <div className="modalTitle">Put on Marketplace</div>
                     <div className="field">
@@ -793,14 +791,14 @@ function ItemDetail(props) {
                             <input type={"number"} placeholder={"Enter Price"} value={putPrice} onChange={event => setPutPrice(event.target.value)} />
                             <div className="inputUnit">{process.env.REACT_APP_TOKEN}</div>
                         </div>
-                    </div>                    
+                    </div>
 
-                   <div className="modalAction">
+                    <div className="modalAction">
                         <div className="cancelButton" onClick={() => setShowPutMarketPlace(false)}>Cancel</div>
                         <div className="submitButton" onClick={() => putFixed()}>
-                        {
-                            listingStatus ? <CircularProgress style={{width: "16px", height: "16px", color: "white",}}/> : "Confirm"
-                        }
+                            {
+                                listingStatus ? <CircularProgress style={{ width: "16px", height: "16px", color: "white", }} /> : "Confirm"
+                            }
                         </div>
                     </div>
                 </ModalBody>
@@ -813,52 +811,53 @@ function ItemDetail(props) {
                 style={{
                     overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(60, 37, 53, 0.25)', zIndex: 99, },
                     content: {
-                        top: '50%', left: '50%', right: 'auto', bottom: 'auto', marginRight: '-50%', transform: 'translate(-50%, -50%)', width: '100%', maxWidth: '500px', borderRadius: '20px', zIndex: 9999 },
+                        top: '50%', left: '50%', right: 'auto', bottom: 'auto', marginRight: '-50%', transform: 'translate(-50%, -50%)', width: '100%', maxWidth: '500px', borderRadius: '20px', zIndex: 9999
+                    },
                 }}
             >
                 <ModalBody>
                     <div className="modalHeader">
-                        <CloseIcon fontSize="small" onClick={() => setShowUnlistMarketPlace(false)}/>                        
+                        <CloseIcon fontSize="small" onClick={() => setShowUnlistMarketPlace(false)} />
                     </div>
                     <div className="modalTitle">
-                        Unlist Item                        
+                        Unlist Item
                         <div className="payAmount">
-                            <div className="price">Are you sure you want to unlist this auction ?</div>                            
-                        </div>                        
-                    </div>                    
-                   <div className="modalAction">
+                            <div className="price">Are you sure you want to unlist this auction ?</div>
+                        </div>
+                    </div>
+                    <div className="modalAction">
                         <div className="cancelButton" onClick={() => setShowUnlistMarketPlace(false)}>Cancel</div>
-                        <div className="submitButton" onClick={() => unlistItem() }>
-                        {
-                            delistingStatus ? <CircularProgress style={{width: "16px", height: "16px", color: "white",}}/> : "Unlist"
-                        }
+                        <div className="submitButton" onClick={() => unlistItem()}>
+                            {
+                                delistingStatus ? <CircularProgress style={{ width: "16px", height: "16px", color: "white", }} /> : "Unlist"
+                            }
                         </div>
                     </div>
                 </ModalBody>
             </Modal>
-            
-            
+
+
 
             <Snackbar anchorOrigin={{
-                    vertical: 'bottom',
-                    horizontal: 'center' 
-                }}
+                vertical: 'bottom',
+                horizontal: 'center'
+            }}
                 open={openSnackbar}
                 autoHideDuration={3000}
                 onClose={handleCloseDialog}
                 message={snackBarMessage}
                 action={
                     <React.Fragment>
-                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseDialog}>
-                        <CloseIcon fontSize="small" />
-                    </IconButton>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleCloseDialog}>
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
                     </React.Fragment>
                 }
             />
 
         </div>
     );
-   
+
 }
 
 export default ItemDetail;

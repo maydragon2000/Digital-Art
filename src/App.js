@@ -23,7 +23,7 @@ import Profile from './Components/profile/profile';
 import ItemDetail from './Components/item-detail/item-detail';
 
 import './App.css';
-import './main.8a3744a4.chunk.css'
+import './main.chunk.css'
 function App() {
 
   const [connectModalOpen, setConnectModalOpen] = useState(null);

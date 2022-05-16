@@ -1,4 +1,4 @@
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { useWeb3React } from '@web3-react/core'
 import axios from 'axios'
 import Snackbar from '@material-ui/core/Snackbar';
@@ -9,7 +9,7 @@ import CloseIcon from '@material-ui/icons/Close';
 import CircularProgress from '@material-ui/core/CircularProgress';
 
 import Header from '../header/header';
-import {Footer} from '../footer/footer'
+import { Footer } from '../footer/footer'
 import styled from 'styled-components';
 
 const EditProfileContent = styled.div`
@@ -116,7 +116,7 @@ const EditProfileContent = styled.div`
     }
 `
 function EditProfile(props) {
-    const { user, login } = props;    
+    const { user, login } = props;
     const [userProfile, setUserProfile] = useState(undefined)
     const { account, library } = useWeb3React();
     const [updating, setUpdating] = useState(false)
@@ -129,12 +129,12 @@ function EditProfile(props) {
 
     useEffect(() => {
         console.log(`user : ${user}`)
-        if(!!user) {
-          login();
+        if (!!user) {
+            login();
         }
-    }, [user, account, library])
+    }, [user, account, library, login])
 
-    function updateProfile(){        
+    function updateProfile() {
         setUpdating(true)
         const data = new FormData()
         data.append("address", account)
@@ -142,32 +142,32 @@ function EditProfile(props) {
         data.append("profilePic", newProfilePicSrc || "")
 
         axios.post("/api/user/update", data)
-        .then(res => {            
-            setUpdating(false)
-            setSnackBarMessage("Success")
-            setOpenSnackbar(true)  
-            props.history.push(`/profile/${account}`)                  
-        })
-        .catch(err => {
-            setUpdating(false)
-            setSnackBarMessage(err.response.data.message)
-            setOpenSnackbar(true)     
-        })
+            .then(res => {
+                setUpdating(false)
+                setSnackBarMessage("Success")
+                setOpenSnackbar(true)
+                props.history.push(`/profile/${account}`)
+            })
+            .catch(err => {
+                setUpdating(false)
+                setSnackBarMessage(err.response.data.message)
+                setOpenSnackbar(true)
+            })
     }
 
-    useEffect(() => {        
-        if (account && !userProfile){
-          getUser()
-        }        
+    useEffect(() => {
+        if (account && !userProfile) {
+            getUser()
+        }
     }, [user])
 
-    function getUser(){
+    function getUser() {
         axios.get(`/api/user/detail/${account}`)
-        .then(res => {            
-          setUserProfile(res.data.user) 
-          setNewProfilePicSrc(res.data.user.profilePic)
-          setNewName(res.data.user.name)                    
-        })
+            .then(res => {
+                setUserProfile(res.data.user)
+                setNewProfilePicSrc(res.data.user.profilePic)
+                setNewName(res.data.user.name)
+            })
     }
 
     const handleClose = (event, reason) => {
@@ -175,30 +175,30 @@ function EditProfile(props) {
         setOpenSnackbar(false);
     };
 
-    function handleFile(event) {        
+    function handleFile(event) {
         const fileType = event.target.files[0].type.split("/")[0]
-        if (fileType == "image") {
+        if (fileType === "image") {
             const reader = new FileReader();
-            setFile(event.target.files[0])       
+            setFile(event.target.files[0])
             reader.readAsArrayBuffer(event.target.files[0])
             setImgUploading(true)
-            reader.onload = function(event) {
+            reader.onload = function (event) {
                 const buffer = Buffer.from(reader.result);
                 getImageIpfsHash(buffer).then((hash) => {
                     setNewProfilePicSrc(`https://ipfs.io/ipfs/${hash}`)
                     setImgUploading(false)
                 })
             };
-        }        
+        }
     }
-    
+
     return (
         <div className="pg-createItem">
-            <Header {...props}/>
-            
+            <Header {...props} />
+
             <EditProfileContent>
                 {
-                    account ? 
+                    account ?
                         <div className="container">
                             <div className="sectionHeading">
                                 <h2>Edit Profile</h2>
@@ -209,16 +209,16 @@ function EditProfile(props) {
                                         <div className="card has-media followCard">
                                             <div className="content-box">
                                                 <div className="artist-box">
-                                                    <img src={newProfilePicSrc ? newProfilePicSrc : "https://ipfs.io/ipfs/QmaxQGhY772ffG7dZpGsVoUWcdSpEV1APru95icXKmii67"} alt="Logo" className="circle-img"/>
+                                                    <img src={newProfilePicSrc ? newProfilePicSrc : "https://ipfs.io/ipfs/QmaxQGhY772ffG7dZpGsVoUWcdSpEV1APru95icXKmii67"} alt="Logo" className="circle-img" />
                                                     <div className="details">
-                                                        <span className="artistName">{newName}</span>                                                                                          
+                                                        <span className="artistName">{newName}</span>
                                                     </div>
-                                                </div>                                            
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                                
+
                                 <div className="box-12 box-lg-7 box-xl-6 formWrap">
                                     <div className="inner-wrap">
                                         <div className="form-box">
@@ -226,35 +226,35 @@ function EditProfile(props) {
                                                 <div className="inputField">
                                                     <input type="file" accept="image/*" multiple={false} onChange={handleFile} className="fm-input" />
                                                     <p>{file && !imgUploading ? "Uploaded!" : imgUploading ? "Uploading to IPFS..." : ""} </p>
-                                                </div>  
+                                                </div>
                                                 <div className="inputField">
                                                     <input type="text" onChange={e => setNewName(e.target.value)} value={newName} className="fm-input" placeholder="User Name" />
-                                                </div>                                                                                    
+                                                </div>
 
                                                 <div className="inputField button-box">
                                                     <button className="cta-button" disabled={updating} onClick={() => updateProfile()}>
                                                         {
-                                                            updating ? 
-                                                                <CircularProgress style={{width: "16px", height: "16px", color: "white"}}/>
+                                                            updating ?
+                                                                <CircularProgress style={{ width: "16px", height: "16px", color: "white" }} />
                                                                 :
                                                                 'Update'
-                                                        }                                                        
+                                                        }
                                                     </button>
-                                                </div>     
+                                                </div>
                                             </div>
                                         </div>
 
                                     </div>
 
                                 </div>
-                                
+
                             </div>
                         </div>
                         :
                         <></>
-                }                
-            </EditProfileContent>            
-            <Footer/>
+                }
+            </EditProfileContent>
+            <Footer />
             <Snackbar
                 anchorOrigin={{
                     vertical: 'bottom',
@@ -266,14 +266,14 @@ function EditProfile(props) {
                 message={snackBarMessage}
                 action={
                     <React.Fragment>
-                    <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
-                        <CloseIcon fontSize="small" />
-                    </IconButton>
+                        <IconButton size="small" aria-label="close" color="inherit" onClick={handleClose}>
+                            <CloseIcon fontSize="small" />
+                        </IconButton>
                     </React.Fragment>
                 }
-                /> 
+            />
         </div>
-    );    
+    );
 }
 
 export default EditProfile;

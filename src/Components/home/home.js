@@ -140,7 +140,20 @@ function Home(props) {
             console.log(err)
          })
    }, [props])
+   console.log(artItems, "artItems");
 
+   useEffect(() => {
+      setArtItems([{
+         assetType: "art",
+         name: "Cute Girl",
+         coverImage: "",
+         creatorUser: {
+            address: "",
+            profilePic: ""
+         },
+         price: 20
+      }])
+   }, [])
    return (
       <div>
          <Header {...props} />
