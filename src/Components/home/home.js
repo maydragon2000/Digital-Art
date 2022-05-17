@@ -6,6 +6,7 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import Slider from "react-slick";
 
+
 // header and banner images
 import banner from '../../assets/images/home-banner-img.jpg'
 import exploreIcon from '../../assets/images/explore-icon-white.svg';
@@ -109,49 +110,105 @@ function Home(props) {
    const [artItems, setArtItems] = useState([])
    const [audioItems, setAudioItems] = useState([])
    const [videoItems, setVideoItems] = useState([])
-
-   useEffect(() => {
-      let query = `/api/item/?assetType=image&sale=true&limit=8`;
-      axios.get(query)
-         .then(res => {
-            setArtItems(res.data.items)
-         }).catch(err => {
-            setArtItems([])
-            console.log(err)
-         })
-   }, [props])
-   useEffect(() => {
-      let query = `/api/item/?assetType=audio&sale=true&limit=8`;
-      axios.get(query)
-         .then(res => {
-            setAudioItems(res.data.items)
-         }).catch(err => {
-            setAudioItems([])
-            console.log(err)
-         })
-   }, [props])
-   useEffect(() => {
-      let query = `/api/item/?assetType=video&sale=true&limit=8`;
-      axios.get(query)
-         .then(res => {
-            setVideoItems(res.data.items)
-         }).catch(err => {
-            setVideoItems([])
-            console.log(err)
-         })
-   }, [props])
-   console.log(artItems, "artItems");
+   //backend receive
+   // useEffect(() => {
+   //    let query = `/api/item/?assetType=image&sale=true&limit=8`;
+   //    axios.get(query)
+   //       .then(res => {
+   //          setArtItems(res.data.items)
+   //       }).catch(err => {
+   //          setArtItems([])
+   //          console.log(err)
+   //       })
+   // }, [props])
+   // useEffect(() => {
+   //    let query = `/api/item/?assetType=audio&sale=true&limit=8`;
+   //    axios.get(query)
+   //       .then(res => {
+   //          setAudioItems(res.data.items)
+   //       }).catch(err => {
+   //          setAudioItems([])
+   //          console.log(err)
+   //       })
+   // }, [props])
+   // useEffect(() => {
+   //    let query = `/api/item/?assetType=video&sale=true&limit=8`;
+   //    axios.get(query)
+   //       .then(res => {
+   //          setVideoItems(res.data.items)
+   //       }).catch(err => {
+   //          setVideoItems([])
+   //          console.log(err)
+   //       })
+   // }, [props])
+   // console.log(artItems, "artItems");
 
    useEffect(() => {
       setArtItems([{
          assetType: "art",
-         name: "Cute Girl",
-         coverImage: "",
+         name: "Cute Girl #4",
+         coverImage: "image/CuteGirl4.jfif",
          creatorUser: {
             address: "",
-            profilePic: ""
+            profilePic: "image/Kroim.jfif",
+            name: "Kroim"
+         },
+         price: 60
+      },
+      {
+         assetType: "art",
+         name: "Cute Girl #5",
+         coverImage: "image/CuteGirl5.jfif",
+         creatorUser: {
+            address: "",
+            profilePic: "image/Kroim.jfif",
+            name: "Kroim"
+         },
+         price: 50
+      },
+      {
+         assetType: "art",
+         name: "Cute Girl3",
+         coverImage: "image/CuteGirl3.jfif",
+         creatorUser: {
+            address: "",
+            profilePic: "image/Kroim.jfif",
+            name: "Kroim"
+         },
+         price: 40
+      },
+      {
+         assetType: "art",
+         name: "Cute Girl",
+         coverImage: "image/CuteGirl1.jfif",
+         creatorUser: {
+            address: "",
+            profilePic: "image/Kroim.jfif",
+            name: "Kroim"
          },
          price: 20
+      }]);
+      setAudioItems([{
+         assetType: "audio",
+         name: "Funny rington",
+         coverImage: "image/FunnyRington.jfif",
+         creatorUser: {
+            address: "",
+            profilePic: "image/Kroim.jfif",
+            name: "Kroim"
+         },
+         price: 45
+      }]);
+      setVideoItems([{
+         assetType: "video",
+         name: "Colossus",
+         coverImage: "image/colossus.png",
+         creatorUser: {
+            address: "",
+            profilePic: "image/Kroim.jfif",
+            name: "Kroim"
+         },
+         price: 100
       }])
    }, [])
    return (

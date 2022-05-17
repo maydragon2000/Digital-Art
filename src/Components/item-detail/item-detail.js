@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom"
+import { useParams, useNavigate } from "react-router-dom"
 import styled from 'styled-components';
 import { useWeb3React } from '@web3-react/core'
 import axios from 'axios'
@@ -8,7 +8,6 @@ import CloseIcon from '@material-ui/icons/Close';
 import IconButton from '@material-ui/core/IconButton';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Modal from "react-modal";
-
 import { getTokenBalance, listItem, delistItem, buy } from "../../utils/contracts";
 import { formatNum } from "../../utils";
 
@@ -491,23 +490,24 @@ function ItemDetail(props) {
     const [listingStatus, setListingStatus] = useState(false);
     const [delistingStatus, setDelistingStatus] = useState(false);
     const [buyingStatus, setBuyingStatus] = useState(false);
-    const [putPrice, setPutPrice] = useState(0)
-
-    function fetchItem() {
-        axios.get(`/api/item/detail/${tokenId}`)
-            .then(res => {
-                setItem(res.data.item)
-            })
-            .catch(err => {
-                //show an error page that the item doesnt exist
-                setItem(undefined)
-            })
-    }
-    useEffect(() => {
-        if (!item) {
-            fetchItem();
-        }
-    }, [item])
+    const [putPrice, setPutPrice] = useState(0);
+    const navigate = useNavigate();
+    //backend receive
+    // function fetchItem() {
+    //     axios.get(`/api/item/detail/${tokenId}`)
+    //         .then(res => {
+    //             setItem(res.data.item)
+    //         })
+    //         .catch(err => {
+    //             //show an error page that the item doesnt exist
+    //             setItem(undefined)
+    //         })
+    // }
+    // useEffect(() => {
+    //     if (!item) {
+    //         fetchItem();
+    //     }
+    // }, [item])
 
     const handleCloseDialog = (event, reason) => {
         if (reason === 'clickaway') return;
@@ -536,7 +536,7 @@ function ItemDetail(props) {
                         setShowPutMarketPlace(false)
                         setSnackBarMessage("Listed Success! Data will be updated after some block confirmation!");
                         setOpenSnackbar(true);
-                        props.history.push(`/profile/${account}`)
+                        navigate(`/profile/${account}`)
                         return true;
                     })
                     .catch((error) => {
@@ -569,7 +569,7 @@ function ItemDetail(props) {
                         setShowUnlistMarketPlace(false)
                         setSnackBarMessage("Unlisted Success! Data will be updated after some block confirmation!");
                         setOpenSnackbar(true);
-                        props.history.push(`/profile/${account}`)
+                        navigate(`/profile/${account}`)
                         return true;
                     })
                     .catch((error) => {
@@ -611,7 +611,7 @@ function ItemDetail(props) {
                         setShowBuyNowModal(false)
                         setSnackBarMessage("Bought Success! Data will be updated after some block confirmation!");
                         setOpenSnackbar(true);
-                        props.history.push(`/profile/${account}`)
+                        navigate(`/profile/${account}`)
                         return true;
                     })
                     .catch((error) => {
@@ -629,6 +629,46 @@ function ItemDetail(props) {
         });
     }
 
+    useEffect(() => {
+        setItem({
+            assetType: "image",
+            mainData: "/image/CuteGirl3.jfif",
+            name: "Cute Girl #3",
+            description: "Pretty cartoon girl",
+            creatorUser: {
+                address: "0000000000",
+                profilePic: "/image/Kroim.jfif",
+                name: "Kroim"
+            },
+            ownerUser: {
+                address: "0000000000",
+                profilePic: "/image/Kroim.jfif",
+                name: "Kroim"
+            },
+            price: 40,
+            events: [
+                {
+                    name: "Listed",
+                    timestamp: 1637637479,
+                    price: 40,
+                    fromUser: {
+                        profilePic: "/image/Kroim.jfif",
+                        address: "0000000000",
+                        name: "Kroim"
+                    }
+                },
+                {
+                    name: "Minted",
+                    timestamp: 1637637479,
+                    toUser: {
+                        profilePic: "/image/Kroim.jfif",
+                        address: "0000000000",
+                        name: "Kroim"
+                    }
+                }
+            ]
+        })
+    }, [])
 
     return (
         <div className="pg-inner">
@@ -656,7 +696,7 @@ function ItemDetail(props) {
                                     <span>Created by:</span>
                                     <div className="artist-box">
                                         <img src={item?.creatorUser?.profilePic} alt="ArtistImage"
-                                            onClick={() => props.history.push(`/profile/${item?.creatorUser?.address}`)} />
+                                            onClick={() => navigate(`/profile/${item?.creatorUser?.address}`)} />
                                         <div className="details">
                                             <span className="artistName">{item?.creatorUser?.name}</span>
                                         </div>
@@ -666,7 +706,7 @@ function ItemDetail(props) {
                                     <span>Owned by:</span>
                                     <div className="artist-box">
                                         <img src={item?.ownerUser?.profilePic} alt="ArtistImage"
-                                            onClick={() => props.history.push(`/profile/${item?.ownerUser?.address}`)} />
+                                            onClick={() => navigate(`/profile/${item?.ownerUser?.address}`)} />
                                         <div className="details">
                                             <span className="artistName">{item?.ownerUser?.name}</span>
                                         </div>
@@ -711,14 +751,14 @@ function ItemDetail(props) {
                             <div className="filterBox">
                             </div>
                             <div className="tableBox">
-                                <table class="table">
-                                    <thead class="thead-light">
+                                <table className="table">
+                                    <thead className="thead-light">
                                         <tr>
-                                            <th class="event" scope="col">Event</th>
-                                            <th class="price" scope="col">Price</th>
-                                            <th class="from" scope="col">From</th>
-                                            <th class="to" scope="col">To</th>
-                                            <th class="date" scope="col">Date</th>
+                                            <th className="event" scope="col">Event</th>
+                                            <th className="price" scope="col">Price</th>
+                                            <th className="from" scope="col">From</th>
+                                            <th className="to" scope="col">To</th>
+                                            <th className="date" scope="col">Date</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -857,7 +897,6 @@ function ItemDetail(props) {
 
         </div>
     );
-
 }
 
 export default ItemDetail;

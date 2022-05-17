@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useWeb3React } from '@web3-react/core'
 import axios from 'axios'
 import { useParams } from "react-router-dom"
-
+import { useNavigate } from "react-router-dom";
 
 import Header from '../header/header';
 import { Footer } from '../footer/footer'
@@ -141,7 +141,7 @@ const ProfileContent = styled.div`
     }
 `
 function Profile(props) {
-
+    const navigate = useNavigate();
     const [items, setItems] = useState([])
     const { user, login } = props;
     let { address } = useParams();
@@ -151,61 +151,133 @@ function Profile(props) {
     const { account, library } = useWeb3React();
 
     const [userProfile, setUserProfile] = useState(undefined)
+    //backend receive
+    // useEffect(() => {
+    //     if (!userProfile) {
+    //         getUser()
+    //     }
+    // }, [address, getUser, userProfile])
 
+    // useEffect(() => {
+    //     if (!!user) {
+    //         login();
+    //     }
+    // }, [user, account, library, login])
+
+    // function getUser() {
+    //     axios.get(`/api/user/detail/${address ? address : ""}`)
+    //         .then(res => {
+    //             setUserProfile(res.data.user)
+    //         })
+    // }
+
+    // useEffect(() => {
+    //     if (address) {
+    //         let query = `/api/item/?owner=${address}`;
+    //         switch (curTab) {
+    //             case 'sale':
+    //                 // On Sale
+    //                 query = `/api/item/?owner=${address}&sale=true`;
+    //                 break;
+    //             case 'owned':
+    //                 // Owned
+    //                 query = `/api/item/?owner=${address}`;
+    //                 break;
+    //             case 'created':
+    //                 // Created
+    //                 query = `/api/item/?creator=${address}`;
+    //                 break;
+    //             default:
+    //                 break;
+    //         }
+    //         axios.get(query)
+    //             .then(res => {
+    //                 setItems(res.data.items)
+    //             }).catch(err => {
+    //                 setItems([])
+    //                 console.log(err)
+    //             })
+    //     }
+    // }, [curTab, address])
     useEffect(() => {
-        if (!userProfile) {
-            getUser()
-        }
-    }, [address, getUser, userProfile])
-
-    useEffect(() => {
-        if (!!user) {
-            login();
-        }
-    }, [user, account, library, login])
-
-    function getUser() {
-        axios.get(`/api/user/detail/${address ? address : ""}`)
-            .then(res => {
-                setUserProfile(res.data.user)
-            })
-    }
-
-    useEffect(() => {
-        if (address) {
-            let query = `/api/item/?owner=${address}`;
-            switch (curTab) {
-                case 'sale':
-                    // On Sale
-                    query = `/api/item/?owner=${address}&sale=true`;
-                    break;
-                case 'owned':
-                    // Owned
-                    query = `/api/item/?owner=${address}`;
-                    break;
-                case 'created':
-                    // Created
-                    query = `/api/item/?creator=${address}`;
-                    break;
-                default:
-                    break;
-            }
-            axios.get(query)
-                .then(res => {
-                    setItems(res.data.items)
-                }).catch(err => {
-                    setItems([])
-                    console.log(err)
-                })
-        }
-    }, [curTab, address])
-
+        setUserProfile({
+            profilePic: "/image/Kroim.jfif",
+            name: "Kroim"
+        });
+        setItems([
+            {
+                assetType: "video",
+                name: "Colossus",
+                coverImage: "/image/colossus.png",
+                creatorUser: {
+                    address: "",
+                    profilePic: "/image/Kroim.jfif",
+                    name: "Kroim"
+                },
+                price: 100
+            },
+            {
+                assetType: "audio",
+                name: "Funny rington",
+                coverImage: "/image/FunnyRington.jfif",
+                creatorUser: {
+                    address: "",
+                    profilePic: "/image/Kroim.jfif",
+                    name: "Kroim"
+                },
+                price: 45
+            },
+            {
+                assetType: "art",
+                name: "Cute Girl #4",
+                coverImage: "/image/CuteGirl4.jfif",
+                creatorUser: {
+                    address: "",
+                    profilePic: "/image/Kroim.jfif",
+                    name: "Kroim"
+                },
+                price: 60
+            },
+            {
+                assetType: "art",
+                name: "Cute Girl #5",
+                coverImage: "/image/CuteGirl5.jfif",
+                creatorUser: {
+                    address: "",
+                    profilePic: "/image/Kroim.jfif",
+                    name: "Kroim"
+                },
+                price: 50
+            },
+            {
+                assetType: "art",
+                name: "Cute Girl3",
+                coverImage: "/image/CuteGirl3.jfif",
+                creatorUser: {
+                    address: "",
+                    profilePic: "/image/Kroim.jfif",
+                    name: "Kroim"
+                },
+                price: 40
+            },
+            {
+                assetType: "art",
+                name: "Cute Girl",
+                coverImage: "/image/CuteGirl1.jfif",
+                creatorUser: {
+                    address: "",
+                    profilePic: "/image/Kroim.jfif",
+                    name: "Kroim"
+                },
+                price: 20
+            }])
+    }, [])
     return (
         <div className="pg-explore">
             <Header {...props} />
             <ProfileContent>
                 <div style={{ textAlign: 'right' }}>
-                    <div className="edit-button" onClick={() => props.history.push('/editprofile')}>Edit</div>
+                    <div className="edit-button" onClick={() => navigate('/editprofile')}>Edit</div>
                 </div>
                 <div className="user-info">
                     <img src={userProfile && userProfile.profilePic ? userProfile.profilePic : "https://ipfs.io/ipfs/QmaxQGhY772ffG7dZpGsVoUWcdSpEV1APru95icXKmii67"} alt="ArtistImage" />

@@ -9,9 +9,11 @@ export function useInactiveListener(suppress = false) {
   const connector = window.localStorage.getItem(connectorLocalStorageKey);
   useEffect(() => {
     if (suppress) {
-      return () => {};
+      return () => { };
     }
     const { ethereum } = window;
+    console.log(ethereum, "here-arrived");
+
     if (ethereum && ethereum.on && !active && !error) {
       const handleChainChanged = (chainId) => {
         console.log("chainChanged", chainId);
@@ -52,12 +54,12 @@ export function useInactiveListener(suppress = false) {
       };
     }
 
-    if(error) {
+    if (error) {
       setActivateError(error)
     }
-      
-    return () => {};
+
+    return () => { };
   }, [active, error, suppress, activate, connector]);
 
-  return {activateError};
+  return { activateError };
 }

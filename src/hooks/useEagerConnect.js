@@ -12,10 +12,12 @@ export function useEagerConnect() {
   useEffect(() => {
     if (connector && connector !== "") {
       const currentConnector = getConnector(connector)
+
       if (connector === "injectedConnector") {
         currentConnector.isAuthorized().then((isAuthorized) => {
           console.log("useEagerConnect:", { active, isAuthorized })
           if (isAuthorized) {
+
             activate(currentConnector, undefined, true).catch((error) => {
               if (error instanceof UnsupportedChainIdError) {
                 setupNetwork().then((hasSetup) => {

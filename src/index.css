@@ -110,6 +110,11 @@ h4 {
   display: block;
 }
 
+.slick-track {
+  margin-left: 0px;
+  margin-right: 0px;
+}
+
 /* .slick-list, .slick-slider, .slick-track {
    display: flex;
 } */

@@ -23,9 +23,9 @@ import Profile from './Components/profile/profile';
 import ItemDetail from './Components/item-detail/item-detail';
 
 import './App.css';
-import './main.chunk.css'
-function App() {
+//test mode
 
+function App() {
   const [connectModalOpen, setConnectModalOpen] = useState(null);
   const [errorModalOpen, setErrorModalOpen] = useState(null);
   const [networkError, setNetworkError] = useState(null);
@@ -61,7 +61,8 @@ function App() {
     setConnectModalOpen(true)
   }
   const connectToProvider = (connector) => {
-    activate(connector)
+    console.log(connector, "connector");
+    activate(connector);
   }
 
   // handle logic to recognize the connector currently being activated
