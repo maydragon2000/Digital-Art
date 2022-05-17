@@ -1,14 +1,14 @@
 /* fonts face style start */
 @import url('https://fonts.googleapis.com/css2?family=Reem+Kufi&display=swap');
-/* 
+
 @font-face {
   font-family: 'Reem Kufi';
-  src: url('./assets/fonts/reemKufi/ReemKufi-Regular.eot');
-  src: url('./assets/fonts/reemKufi/ReemKufi-Regular.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/reemKufi/ReemKufi-Regular.woff2') format('woff2'),
-    url('./assets/fonts/reemKufi/ReemKufi-Regular.woff') format('woff'),
-    url('./assets/fonts/reemKufi/ReemKufi-Regular.ttf') format('truetype'),
-    url('./assets/fonts/reemKufi/ReemKufi-Regular.svg#ReemKufi-Regular') format('svg');
+  src: url('/src/assets/font/ReemKufiRegular.eot');
+  src: url('/src/assets/font/ReemKufiRegular.eot?#iefix') format('embedded-opentype'),
+    url('/src/assets/font/ReemKufiRegular.woff2') format('woff2'),
+    url('/src/assets/font/ReemKufiRegular.woff') format('woff'),
+    url('/src/assets/font/ReemKufiRegular.ttf') format('truetype'),
+    url('/src/assets/font/ReemKufiRegular.svg#ReemKufi-Regular') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -16,12 +16,12 @@
 
 @font-face {
   font-family: 'Poppins';
-  src: url('./assets/fonts/poppins/Poppins-SemiBold.eot');
-  src: url('./assets/fonts/poppins/Poppins-SemiBold.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/poppins/Poppins-SemiBold.woff2') format('woff2'),
-    url('./assets/fonts/poppins/Poppins-SemiBold.woff') format('woff'),
-    url('./assets/fonts/poppins/Poppins-SemiBold.ttf') format('truetype'),
-    url('./assets/fonts/poppins/Poppins-SemiBold.svg#Poppins-SemiBold') format('svg');
+  src: url('/src/assets/font/PoppinsSemiBold/PoppinsSemiBold.eot');
+  src: url('/src/assets/font/PoppinsSemiBold/PoppinsSemiBold.eot?#iefix') format('embedded-opentype'),
+    url('/src/assets/font/PoppinsSemiBold/PoppinsSemiBold.woff2') format('woff2'),
+    url('/src/assets/font/PoppinsSemiBold/PoppinsSemiBold.woff') format('woff'),
+    url('/src/assets/font/PoppinsSemiBold/PoppinsSemiBold.ttf') format('truetype'),
+    url('/src/assets/font/PoppinsSemiBold/PoppinsSemiBold.svg#Poppins-SemiBold') format('svg');
   font-weight: 600;
   font-style: normal;
   font-display: swap;
@@ -29,12 +29,12 @@
 
 @font-face {
   font-family: 'Poppins';
-  src: url('./assets/fonts/poppins/Poppins-ExtraBold.eot');
-  src: url('./assets/fonts/poppins/Poppins-ExtraBold.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/poppins/Poppins-ExtraBold.woff2') format('woff2'),
-    url('./assets/fonts/poppins/Poppins-ExtraBold.woff') format('woff'),
-    url('./assets/fonts/poppins/Poppins-ExtraBold.ttf') format('truetype'),
-    url('./assets/fonts/poppins/Poppins-ExtraBold.svg#Poppins-ExtraBold') format('svg');
+  src: url('/src/assets/font/PoppinsExtraBold/PoppinsExtraBold.eot');
+  src: url('/src/assets/font/PoppinsExtraBold/PoppinsExtraBold.eot?#iefix') format('embedded-opentype'),
+    url('/src/assets/font/PoppinsExtraBold/PoppinsExtraBold.woff2') format('woff2'),
+    url('/src/assets/font/PoppinsExtraBold/PoppinsExtraBold.woff') format('woff'),
+    url('/src/assets/font/PoppinsExtraBold/PoppinsExtraBold.ttf') format('truetype'),
+    url('/src/assets/font/PoppinsExtraBold/PoppinsExtraBold.svg#Poppins-ExtraBold') format('svg');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
@@ -42,12 +42,12 @@
 
 @font-face {
   font-family: 'Poppins';
-  src: url('./assets/fonts/poppins/Poppins-Regular.eot');
-  src: url('./assets/fonts/poppins/Poppins-Regular.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/poppins/Poppins-Regular.woff2') format('woff2'),
-    url('./assets/fonts/poppins/Poppins-Regular.woff') format('woff'),
-    url('./assets/fonts/poppins/Poppins-Regular.ttf') format('truetype'),
-    url('./assets/fonts/poppins/Poppins-Regular.svg#Poppins-Regular') format('svg');
+  src: url('/src/assets/font/PoppinsRegular/PoppinsRegular.eot');
+  src: url('/src/assets/font/PoppinsRegular/PoppinsRegular.eot?#iefix') format('embedded-opentype'),
+    url('/src/assets/font/PoppinsRegular/PoppinsRegular.woff2') format('woff2'),
+    url('/src/assets/font/PoppinsRegular/PoppinsRegular.woff') format('woff'),
+    url('/src/assets/font/PoppinsRegular/PoppinsRegular.ttf') format('truetype'),
+    url('/src/assets/font/PoppinsRegular/PoppinsRegular.svg#Poppins-Regular') format('svg');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
@@ -55,16 +55,16 @@
 
 @font-face {
   font-family: 'Poppins';
-  src: url('./assets/fonts/poppins/Poppins-Bold.eot');
-  src: url('./assets/fonts/poppins/Poppins-Bold.eot?#iefix') format('embedded-opentype'),
-    url('./assets/fonts/poppins/Poppins-Bold.woff2') format('woff2'),
-    url('./assets/fonts/poppins/Poppins-Bold.woff') format('woff'),
-    url('./assets/fonts/poppins/Poppins-Bold.ttf') format('truetype'),
-    url('./assets/fonts/poppins/Poppins-Bold.svg#Poppins-Bold') format('svg');
+  src: url('/src/assets/font/PoppinsBold/PoppinsBold.eot');
+  src: url('/src/assets/font/PoppinsBold/PoppinsBold.eot?#iefix') format('embedded-opentype'),
+    url('/src/assets/font/PoppinsBold/PoppinsBold.woff2') format('woff2'),
+    url('/src/assets/font/PoppinsBold/PoppinsBold.woff') format('woff'),
+    url('/src/assets/font/PoppinsBold/PoppinsBold.ttf') format('truetype'),
+    url('/src/assets/font/PoppinsBold/PoppinsBold.svg#Poppins-Bold') format('svg');
   font-weight: bold;
   font-style: normal;
   font-display: swap;
-} */
+}
 
 /* fonts face style end */
 
